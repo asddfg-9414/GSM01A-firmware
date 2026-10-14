@@ -5,10 +5,10 @@
 
 extern uint8_t tx_real;
 
-void hy_tx_hmi(void);
+void svc_hmi_tx(void);
 void calculate_shift(float real);
 void interval_conversion(float real);
-void hy_pedal_press(void);
+void svc_hmi_pedal_scan(void);
 void receive_data_parse(void);
 void hmi_res(void);
 

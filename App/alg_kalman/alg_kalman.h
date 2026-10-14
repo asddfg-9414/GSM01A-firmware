@@ -10,7 +10,7 @@ typedef struct {
 
 extern KalmanChannel channels;
 
-void hy_kalman_init(void);
-float hy_kalman_calc(KalmanChannel *channel, float kalman_Z);
+void alg_kalman_init(void);
+float alg_kalman_calc(KalmanChannel *channel, float kalman_Z);
 
 #endif

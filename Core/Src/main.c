@@ -29,14 +29,14 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <rtthread.h>
-#include "hy_pci.h"
-#include "hy_tmc5240.h"
-#include "hy_ad7190.h"
-#include "hy_file.h"
-#include "hy_kalman.h"
-#include "hy_hmi.h"
-#include "hy_fram.h"
-#include "hy_flash.h"
+#include "bsp_board.h"
+#include "drv_tmc5240.h"
+#include "drv_ad7190.h"
+#include "svc_export.h"
+#include "alg_kalman.h"
+#include "svc_hmi.h"
+#include "drv_fram.h"
+#include "drv_w25q64.h"
 #include <math.h>
 
 #include "usb_host.h"
@@ -45,7 +45,7 @@
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 #include "usbh_core.h"
-#include "hy_flash.h"
+#include "drv_w25q64.h"
 // 声明 USB 主机句柄
 extern USBH_HandleTypeDef hUsbHostFS;
 // 声明应用程序状态变量
@@ -122,7 +122,7 @@ static void hmi_uart(void *parameter)
 {
     while (1)
     {
-		hy_tx_hmi();
+		svc_hmi_tx();
 		rt_thread_mdelay(10);
 	}
 }
@@ -214,7 +214,7 @@ void pedal_thread_entry(void *parameter)
 {
 		while(1)
 		{
-				hy_pedal_press();
+				svc_hmi_pedal_scan();
 				rt_thread_mdelay(10);
 		}
 }
@@ -272,11 +272,11 @@ int main(void)
 		HAL_UART_Receive_IT(&huart1,RxBuffer,1);
 		HAL_GPIO_WritePin(HMI_EN_GPIO_Port,HMI_EN_Pin,GPIO_PIN_RESET);
 	
-		hy_ad7190_reset();
-		hy_ad7190_init();
-		hy_kalman_init();
+		drv_ad7190_reset();
+		drv_ad7190_init();
+		alg_kalman_init();
 		rt_thread_mdelay(200);
-		hy_ad7190_power(1);
+		drv_ad7190_power(1);
 		rt_thread_mdelay(200);
 
 		fram_init();
@@ -423,7 +423,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   /* USER CODE BEGIN Callback 1 */
 		if(htim->Instance == TIM2)		
 		{		
-				v_data = hy_ad7190_get_val() - zero;
+				v_data = drv_ad7190_get_val() - zero;
 					
 				if(v_data < 1096*10 && temp_val == 0)	//一轮数据获取中没有超过10g需要进行滤波
 				{		

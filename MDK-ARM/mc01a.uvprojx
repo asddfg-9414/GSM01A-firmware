@@ -336,7 +336,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F405xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../RT-Thread;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/include/;../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/include/libc/include/;../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/include/libc/extension/;../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/include/libc/extension/fcntl/msvc/;../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/include/libc/extension/fcntl/octal/;../App/hy_pci;../App/hy_tmc5240;../App/hy_ad7190;../FATFS/Target;../FATFS/App;../USB_HOST/App;../USB_HOST/Target;../Middlewares/Third_Party/FatFs/src;../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;../App/hy_file;../App/hy_kalman;../App/hy_hmi;../App/hy_fram;../App/hy_flash</IncludePath>
+              <IncludePath>../Core/Inc;../RT-Thread;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/include/;../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/include/libc/include/;../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/include/libc/extension/;../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/include/libc/extension/fcntl/msvc/;../Middlewares/Third_Party/RealThread_RTOS_RT-Thread/include/libc/extension/fcntl/octal/;../App/bsp_board;../App/drv_tmc5240;../App/drv_ad7190;../FATFS/Target;../FATFS/App;../USB_HOST/App;../USB_HOST/Target;../Middlewares/Third_Party/FatFs/src;../Middlewares/ST/STM32_USB_Host_Library/Core/Inc;../Middlewares/ST/STM32_USB_Host_Library/Class/MSC/Inc;../App/svc_export;../App/alg_kalman;../App/svc_hmi;../App/drv_fram;../App/drv_w25q64</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -956,44 +956,44 @@
           <GroupName>App</GroupName>
           <Files>
             <File>
-              <FileName>hy_pci.c</FileName>
+              <FileName>bsp_board.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\App\hy_pci\hy_pci.c</FilePath>
+              <FilePath>..\App\bsp_board\bsp_board.c</FilePath>
             </File>
             <File>
-              <FileName>hy_tmc5240.c</FileName>
+              <FileName>drv_tmc5240.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\App\hy_tmc5240\hy_tmc5240.c</FilePath>
+              <FilePath>..\App\drv_tmc5240\drv_tmc5240.c</FilePath>
             </File>
             <File>
-              <FileName>hy_ad7190.c</FileName>
+              <FileName>drv_ad7190.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\App\hy_ad7190\hy_ad7190.c</FilePath>
+              <FilePath>..\App\drv_ad7190\drv_ad7190.c</FilePath>
             </File>
             <File>
-              <FileName>hy_file.c</FileName>
+              <FileName>svc_export.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\App\hy_file\hy_file.c</FilePath>
+              <FilePath>..\App\svc_export\svc_export.c</FilePath>
             </File>
             <File>
-              <FileName>hy_kalman.c</FileName>
+              <FileName>alg_kalman.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\App\hy_kalman\hy_kalman.c</FilePath>
+              <FilePath>..\App\alg_kalman\alg_kalman.c</FilePath>
             </File>
             <File>
-              <FileName>hy_hmi.c</FileName>
+              <FileName>svc_hmi.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\App\hy_hmi\hy_hmi.c</FilePath>
+              <FilePath>..\App\svc_hmi\svc_hmi.c</FilePath>
             </File>
             <File>
-              <FileName>hy_fram.c</FileName>
+              <FileName>drv_fram.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\App\hy_fram\hy_fram.c</FilePath>
+              <FilePath>..\App\drv_fram\drv_fram.c</FilePath>
             </File>
             <File>
-              <FileName>hy_flash.c</FileName>
+              <FileName>drv_w25q64.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\App\hy_flash\hy_flash.c</FilePath>
+              <FilePath>..\App\drv_w25q64\drv_w25q64.c</FilePath>
             </File>
           </Files>
         </Group>

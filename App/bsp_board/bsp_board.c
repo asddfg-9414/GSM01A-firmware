@@ -1,10 +1,10 @@
-﻿#include "hy_pci.h"
+﻿#include "bsp_board.h"
 
 /**
  * @brief 控制输出1的状态
  * @param state: 输出状态，1表示高电平，0表示低电平
  */
-void hy_pci_out1(uint8_t state)
+void bsp_board_out1(uint8_t state)
 {
     if(state == 1)
     {
@@ -22,7 +22,7 @@ void hy_pci_out1(uint8_t state)
  * @brief 控制输出2的状态
  * @param state: 输出状态，1表示高电平，0表示低电平
  */
-void hy_pci_out2(uint8_t state)
+void bsp_board_out2(uint8_t state)
 {
     if(state == 1)
     {
@@ -36,7 +36,7 @@ void hy_pci_out2(uint8_t state)
     }
 }
 
-void hy_pci_led1(uint8_t state)
+void bsp_board_led1(uint8_t state)
 {
     if(state == 1)
     {
@@ -50,7 +50,7 @@ void hy_pci_led1(uint8_t state)
     }
 }
 
-void hy_pci_led2(uint8_t state)
+void bsp_board_led2(uint8_t state)
 {
     if(state == 1)
     {

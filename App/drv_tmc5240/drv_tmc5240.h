@@ -86,7 +86,7 @@ extern SPI_HandleTypeDef hspi1;
 
 
 
-extern void hy_tmc5240_init(void);
+extern void drv_tmc5240_init(void);
 extern void tmc_test(void);
 extern void __tmc_spi_writeint(uint8_t reg, uint32_t dat);
 extern uint32_t __tmc_spi_readint(uint8_t reg);

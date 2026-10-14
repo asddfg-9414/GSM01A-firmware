@@ -5,8 +5,8 @@
 #include "FatFs.h"
 #include "stdio.h"
 #include "ff.h"
-#include "hy_fram.h"
-#include "hy_flash.h"
+#include "drv_fram.h"
+#include "drv_w25q64.h"
 #include <stdlib.h>
 
 /*定义自己的存储设备*/
@@ -21,11 +21,11 @@
 
 extern uint8_t export_start;
 /* 缓冲区长度：唯一定义处，.c 中的数组定义同样引用这两个宏，避免两处不一致 */
-#define HY_FILE_NAME_MAX   24		/* 18 字节文件名 + 终止符余量 */
-#define HY_SAVE_DATA_MAX   32		/* 28 字节表格行 + 终止符余量 */
-extern char file_name[HY_FILE_NAME_MAX];
+#define EXPORT_FILE_NAME_MAX   24		/* 18 字节文件名 + 终止符余量 */
+#define EXPORT_SAVE_DATA_MAX   32		/* 28 字节表格行 + 终止符余量 */
+extern char file_name[EXPORT_FILE_NAME_MAX];
 extern uint8_t close_file;
-extern char save_data[HY_SAVE_DATA_MAX];
+extern char save_data[EXPORT_SAVE_DATA_MAX];
 extern uint8_t receive_data_1;
 extern uint8_t flash_access;
 

@@ -102,21 +102,40 @@ Firmware for a force-measurement instrument (needle-prick analgesy meter / paw g
 ├── RT-Thread/rtconfig.h      RT-Thread 裁剪配置
 ├── FATFS/                    FatFs 移植层（App / Target）
 ├── USB_HOST/                 USB 主机应用层（App / Target）
-├── App/                      ★ 自研业务模块
-│   ├── hy_ad7190/            AD7190 驱动（复位、寄存器、采样率、去皮）
-│   ├── hy_kalman/            一维卡尔曼滤波
-│   ├── hy_hmi/               串口屏通信、脚踏开关、下行命令解析
-│   ├── hy_fram/              FRAM 缓存 + 组/槽数据管理
-│   ├── hy_flash/             W25Q64 读写（含自动扇区擦除）
-│   ├── hy_file/              FatFs 文件操作 + CSV 导出
-│   ├── hy_pci/               GPIO 输出与 LED 指示
-│   └── hy_tmc5240/           TMC5240 步进驱动（预留，当前未启用）
+├── App/                      ★ 自研模块（按层次前缀组织，见 3.2 命名规则）
+│   ├── bsp_board/            BSP · GPIO 输出与 LED 指示
+│   ├── drv_ad7190/           DRV · AD7190 24 位 ADC 驱动
+│   ├── drv_fram/             DRV · FRAM 缓存 + 组/槽数据模型
+│   ├── drv_w25q64/           DRV · W25Q64 SPI Flash 读写
+│   ├── drv_tmc5240/          DRV · TMC5240 步进驱动（预留，未启用）
+│   ├── alg_kalman/           ALG · 一维卡尔曼滤波
+│   ├── svc_hmi/              SVC · 串口屏通信 + 脚踏开关 + 协议解析
+│   └── svc_export/           SVC · FatFs 文件操作 + CSV 导出
 ├── MDK-ARM/                  Keil 工程（mc01a.uvprojx / startup_stm32f405xx.s）
 ├── mc01a.ioc                 STM32CubeMX 工程配置
 └── docs/                     架构与协议文档
 ```
 
-### 3.2 线程模型（RT-Thread）
+### 3.2 命名规则
+
+`App/` 下的模块按**层次前缀**组织，前缀直接表明该模块在架构中的位置：
+
+| 前缀 | 层次 | 职责 | 本工程实例 |
+|---|---|---|---|
+| `bsp_` | 板级支持 | 与具体板卡绑定的 GPIO / 指示灯 / 数字输出 | `bsp_board` |
+| `drv_` | 器件驱动 | 芯片级时序与寄存器操作 | `drv_ad7190`、`drv_fram`、`drv_w25q64`、`drv_tmc5240` |
+| `alg_` | 算法 | 纯计算，不直接访问硬件 | `alg_kalman` |
+| `svc_` | 服务 | 串联驱动，完成一段完整业务流程 | `svc_hmi`、`svc_export` |
+
+配套约定：
+
+1. **目录名 = 文件名 = 标识符前缀**。例如 `App/drv_ad7190/drv_ad7190.c`，对外函数为 `drv_ad7190_init()`、`drv_ad7190_get_val()`。
+2. 驱动层按**器件型号**而非功能命名（用 `drv_w25q64` 而不是 `drv_flash`）：换料时新增模块即可，不影响上层调用。
+3. 算法层不包含任何 `HAL_*` 调用，便于剥离到 PC 上单独做单元测试。
+4. 服务层是唯一允许同时调用多个驱动的层（例如 `svc_export` 同时使用 `drv_w25q64` 与 FatFs）。
+5. 模块内部的领域函数保留语义化命名（如 `push_sample()`、`slot_flush_reorder()`），不强制加前缀。
+
+### 3.3 线程模型（RT-Thread）
 
 | 线程 | 入口 | 优先级 | 栈 | 节拍 | 职责 |
 |---|---|---|---|---|---|
@@ -139,7 +158,7 @@ flowchart TD
     C --> E["calculate_shift()<br/>量程分挡 1~7"]
     C --> F["interval_conversion()<br/>曲线坐标 0~150"]
     C --> G["push_sample()<br/>300 点环形缓冲"]
-    D --> H["task_2 hy_tx_hmi()"]
+    D --> H["task_2 svc_hmi_tx()"]
     E --> H
     F --> H
     H -->|"USART1 512000"| I["串口 HMI 屏<br/>数值 + 峰值 + 挡位 + 曲线"]
@@ -161,7 +180,7 @@ flowchart TD
 | 槽 | 20 槽 / 组 | **FRAM**（12 KB 工作区） | 一组实验的 20 次记录 |
 | 组 | 100 组 | **W25Q64**（`GROUP_DATA_ADDR(g) = g × 12 KB`，共 1.2 MB） | 长期归档 |
 
-关键宏（`App/hy_fram/hy_fram.h`）：
+关键宏（`App/drv_fram/drv_fram.h`）：
 
 ```c
 #define BLK_SZ          (300*2)              /* 单槽 600 字节 */
@@ -280,7 +299,7 @@ Flash ≈ 46.7 KB / 1024 KB        RAM ≈ 37.6 KB / 128 KB
 | **2026-04-07** | 新增 IWDG 硬件看门狗（≈2 s）；新增串口屏上电复位 `hmi_res()`；按实测数据重新标定（灵敏度 ≈ 1096 计数/g）；采样率提升至 1000 Hz；关闭卡尔曼滤波，改用多点平均降噪 |
 | 2025-11-19 | FRAM 组/槽数据模型、CSV 导出流程、双脚踏开关功能定版 |
 | 2025-09 ~ 10 | 集成 FatFs + USB Host + RT-Thread，串口屏通信框架建立 |
-| 2025-01 ~ 02 | 早期驱动模块（`hy_pci` / `hy_tmc5240` / `hy_kalman`）与硬件接口定义 |
+| 2025-01 ~ 02 | 早期驱动模块（`bsp_board` / `drv_tmc5240` / `alg_kalman`）与硬件接口定义 |
 
 详见 [`CHANGELOG.md`](CHANGELOG.md)。
 
@@ -293,14 +312,14 @@ Flash ≈ 46.7 KB / 1024 KB        RAM ≈ 37.6 KB / 128 KB
 剩余待办按优先级分为两类：
 
 - **P1 · 健壮性与实时性**：跨执行流共享变量未加 `volatile`、全局 `buf` 无保护、`ram` 结构体并发访问、串口发送阻塞、USB 轮询入口分散、掉电丢失当前组数据
-- **P2 · 可维护性**：标定常数硬编码、Magic Number 遍布、注释与实现不符、死代码、`hy_hmi.c` 剩余 `sprintf`、缺少单元测试
+- **P2 · 可维护性**：标定常数硬编码、Magic Number 遍布、注释与实现不符、死代码、`svc_hmi.c` 剩余 `sprintf`、缺少单元测试
 
 ---
 
 ## 十、开发约定
 
 1. **所有自研代码必须写在 `/* USER CODE BEGIN */ ... /* USER CODE END */` 区块内**，以便用 CubeMX 重新生成 `Core/` 时不丢失。
-2. 自研模块统一放在 `App/` 下，按 `hy_<外设或功能>` 命名，一个模块一个目录（`.c` + `.h`）。
+2. 自研模块统一放在 `App/` 下，按 `bsp_ / drv_ / alg_ / svc_` 层次前缀命名，一个模块一个目录（`.c` + `.h`），详见 3.2 节。
 3. **源文件编码为 UTF-8 with BOM**（中文注释）。Keil µVision、VS Code 与 GitHub 网页均可正确显示。新增文件请保持该编码；`Drivers/` 与 `Middlewares/` 下的官方中间件保持原始编码，请勿转换。
 4. 新增源文件后需同步更新 `MDK-ARM/mc01a.uvprojx` 的分组与头文件包含路径。
 

@@ -1,4 +1,4 @@
-﻿#include "hy_kalman.h"
+﻿#include "alg_kalman.h"
 
 KalmanChannel channels;
 
@@ -11,13 +11,13 @@ void _kalman_single_assignment(KalmanChannel *channel, float Q, float R, float i
     channel->kalman_P = initial_P;
 }
 
-void hy_kalman_init(void)
+void alg_kalman_init(void)
 {
     _kalman_single_assignment(&channels, 0.001f, 0.2f, 0, 1);
 }	
 
 // 卡尔曼滤波器函数，用于估计温度值
-float hy_kalman_calc(KalmanChannel *channel, float kalman_Z)
+float alg_kalman_calc(KalmanChannel *channel, float kalman_Z)
 {
 	float X_ = channel->kalman_X; // 上一次的状态估计值
     float P_ = channel->kalman_P + channel->kalman_Q; // 更新估计误差协方差

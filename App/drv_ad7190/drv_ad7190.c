@@ -1,5 +1,5 @@
-﻿#include "hy_ad7190.h"
-#include "hy_kalman.h"
+﻿#include "drv_ad7190.h"
+#include "alg_kalman.h"
 #include "tim.h"
 #include "stm32f4xx_hal.h"
 
@@ -59,7 +59,7 @@ uint32_t __ad7190_read_reg(uint8_t reg)
 }
 
 // 重置AD7190
-void hy_ad7190_reset(void)
+void drv_ad7190_reset(void)
 {
     __ad7190_spi_cs(1); // 使能片选
 
@@ -72,7 +72,7 @@ void hy_ad7190_reset(void)
 }
 
 // 初始化AD7190
-void hy_ad7190_init(void)
+void drv_ad7190_init(void)
 {
     rt_thread_mdelay(100); // 延时100ms
     __ad7190_spi_cs(1); // 使能片选
@@ -129,12 +129,12 @@ unsigned long long get_tare_value(void)
 
 	for (i = 0; i < 160; i++)
     {
-        hy_ad7190_get_val();
+        drv_ad7190_get_val();
 		}
     // 获取200个数据
     for (i = 0; i < 200; i++)
     {
-        value = hy_ad7190_get_val();
+        value = drv_ad7190_get_val();
 //				value = channels.kalman_X;
 				rt_thread_mdelay(10);
         sum += value;
@@ -194,7 +194,7 @@ void sampling_rate(uint8_t rate)
 }
 
 // 测试AD7190的LED功能
-void hy_ad7190_led_test(void)
+void drv_ad7190_led_test(void)
 {
     __ad7190_spi_cs(1); // 使能片选
     __ad7190_spi_write(0x28); // 写入GPIO控制寄存器地址
@@ -209,7 +209,7 @@ void hy_ad7190_led_test(void)
 }
 
 // 读取AD7190的配置寄存器和模式寄存器
-void hy_ad7190_read_reg(void)
+void drv_ad7190_read_reg(void)
 {
     rt_thread_mdelay(1000); // 延时1000ms
     __ad7190_spi_cs(1); // 使能片选
@@ -222,7 +222,7 @@ void hy_ad7190_read_reg(void)
 }
 
 // 控制AD7190的电源
-void hy_ad7190_power(uint8_t en)
+void drv_ad7190_power(uint8_t en)
 {
     __ad7190_spi_cs(1); // 使能片选
     __ad7190_spi_write(0x28); // 写入GPIO控制寄存器地址
@@ -231,14 +231,14 @@ void hy_ad7190_power(uint8_t en)
 }
 
 // 从AD7190获取测量值
-uint32_t hy_ad7190_get_val(void)
+uint32_t drv_ad7190_get_val(void)
 {
     uint32_t val = 0;
     __ad7190_spi_cs(1); // 使能片选
     val = __ad7190_read_reg(0x58); // 读取数据
     __ad7190_spi_cs(0); // 使能片选
 	
-//		hy_kalman_calc(&channels,val);
+//		alg_kalman_calc(&channels,val);
 	
     return val;
 }

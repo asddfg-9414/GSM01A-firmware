@@ -1,5 +1,5 @@
-﻿#include "hy_fram.h"
-#include "hy_flash.h"
+﻿#include "drv_fram.h"
+#include "drv_w25q64.h"
 
 slot_t ram;   	// 创建数据缓存结构体
 static int16_t group_buf[300*20];

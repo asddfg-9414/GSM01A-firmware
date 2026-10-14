@@ -1,8 +1,8 @@
-﻿#include "hy_file.h"
+﻿#include "svc_export.h"
  
 uint8_t export_start = 0;		//导出数据操作标志位
-char file_name[HY_FILE_NAME_MAX];		//文件名
-char save_data[HY_SAVE_DATA_MAX];		//需要导出的数据
+char file_name[EXPORT_FILE_NAME_MAX];		//文件名
+char save_data[EXPORT_SAVE_DATA_MAX];		//需要导出的数据
 static int16_t graph_data[300];		//曲线图原始数据
 uint8_t receive_data_1 = 0;		//接收到最新一组需要导出的数据
 uint8_t flash_access;				//USB是否接入标志

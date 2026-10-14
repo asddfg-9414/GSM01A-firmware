@@ -1,10 +1,10 @@
-﻿#include "hy_hmi.h"
+﻿#include "svc_hmi.h"
 #include "usart.h"
-#include "hy_file.h"
+#include "svc_export.h"
 #include "tim.h"
-#include "hy_kalman.h"
-#include "hy_ad7190.h"
-#include "hy_fram.h"
+#include "alg_kalman.h"
+#include "drv_ad7190.h"
+#include "drv_fram.h"
 #include <math.h>
 
 uint8_t RxBuffer[1];
@@ -31,7 +31,7 @@ extern int32_t mean_val;
 void export_data(void);
 void addt(void);
 
-void hy_tx_hmi(void)	//10ms进一次
+void svc_hmi_tx(void)	//10ms进一次
 {
 	if(last_shift != shift)	//挡位切换或者串口屏需要恢复曲线图
 	{
@@ -85,7 +85,7 @@ void hmi_res(void)
 	HAL_UART_Transmit(&huart1,(uint8_t *)buf,strlen(buf),2000);
 }
 
-void hy_pedal_press(void)
+void svc_hmi_pedal_scan(void)
 {
 		static uint8_t press_key1 = 0;
 		static uint8_t press_key2 = 0;
@@ -280,7 +280,7 @@ void receive_data_parse(void)
 				temp_val = 0;
 				mean_val = 0;
 				max_val = 0;
-				hy_kalman_init();
+				alg_kalman_init();
 				
 				zero = get_tare_value();   //100Hz采样
 				sampling_rate(g_usart_rx_buf[2]);

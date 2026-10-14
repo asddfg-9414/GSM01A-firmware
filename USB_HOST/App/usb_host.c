@@ -25,7 +25,7 @@
 #include "usbh_msc.h"
 
 /* USER CODE BEGIN Includes */
-#include "hy_pci.h"
+#include "bsp_board.h"
 
 /* USER CODE END Includes */
 
@@ -115,8 +115,8 @@ static void USBH_UserProcess  (USBH_HandleTypeDef *phost, uint8_t id)
     case HOST_USER_DISCONNECTION:
       // ��Ӧ�ó���״̬����Ϊ�豸�ѶϿ�
       Appli_state = APPLICATION_DISCONNECT;
-      // �ر� LED �ƣ����� hy_pci_led1(0) ��ʾ�ر� LED��
-      hy_pci_led1(0);
+      // �ر� LED �ƣ����� bsp_board_led1(0) ��ʾ�ر� LED��
+      bsp_board_led1(0);
       break;
 
     /* �� USB �豸�����������򱻼���ʱ���������¼� */
@@ -129,8 +129,8 @@ static void USBH_UserProcess  (USBH_HandleTypeDef *phost, uint8_t id)
     case HOST_USER_CONNECTION:
       // ��Ӧ�ó���״̬����Ϊ�豸������
       Appli_state = APPLICATION_START;
-      // �� LED �ƣ����� hy_pci_led1(1) ��ʾ�� LED��
-      hy_pci_led1(1);
+      // �� LED �ƣ����� bsp_board_led1(1) ��ʾ�� LED��
+      bsp_board_led1(1);
       break;
 
     /* Ĭ�����������δ֪�¼� */

@@ -1,4 +1,4 @@
-﻿#include "hy_tmc5240.h"
+﻿#include "drv_tmc5240.h"
 
 void __tmc_spi_cs(uint8_t en)
 {
@@ -91,7 +91,7 @@ uint32_t __tmc_spi_readint(uint8_t reg)
     return dat;
 }
 
-void hy_tmc5240_init(void)
+void drv_tmc5240_init(void)
 {
 	__tmc_spi_writeint(TMC5240_GSTAT, 0x00000007); // 清除全局状态寄存器的错误标志和警告标志，确保系统正常运行
 	__tmc_spi_writeint(TMC5240_GCONF, 0x00000004); // 设置全局配置寄存器为默认值，关闭所有特殊功能，确保系统处于初始状态

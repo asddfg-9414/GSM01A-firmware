@@ -251,20 +251,19 @@ Flash ≈ 46.7 KB / 1024 KB        RAM ≈ 37.6 KB / 128 KB
 
 ## 七、仓库裁剪说明
 
-本仓库已从完整开发目录中**剔除全部编译产物与个人配置**，仅保留可编译、可追溯的源码：
+本仓库仅包含可编译、可追溯的源码，编译产物与 IDE 个人配置均不纳入：
 
 **已移除（约 100 MB / 3300 个文件）**
 
 | 内容 | 说明 |
 |---|---|
 | `MDK-ARM/mc01a/` | 编译输出（`.o` `.crf` `.axf` `.hex` `.map` `.htm` `.dep` 等，约 100 MB） |
-| `MDK-ARM/*.uvguix.*` | Keil 界面布局，含开发者用户名 |
+| `MDK-ARM/*.uvguix.*` | Keil 界面布局（因人而异，无需共享） |
 | `MDK-ARM/*.lst` | 汇编列表文件（可由编译重新生成） |
 | `Drivers/CMSIS/DSP`、`NN`、`Core_A`、`DAP`、`RTOS`、`RTOS2` | CMSIS 扩展组件，本工程未使用（约 12 MB） |
 | `Drivers/CMSIS/Device/ST/STM32F4xx/Source` | 各工具链启动文件模板，本工程使用自带启动文件 |
 | `Drivers/CMSIS/Device/ST/STM32F4xx/Include/` 中非 F405 的芯片头文件 | 仅保留 `stm32f4xx.h` / `stm32f405xx.h` / `system_stm32f4xx.h`（节省约 24 MB） |
 | `Middlewares/Third_Party/FatFs/src/option/cc*.c`、`unicode.c` | `ffconf.h` 中 `_USE_LFN = 0`，码表文件不参与编译 |
-| `*.rar` 版本快照 | 历史打包文件 |
 
 > **如需恢复**：用 STM32CubeMX 重新打开 `mc01a.ioc` 生成一次代码即可补齐 CMSIS 与 HAL 全集；或从 Keil Pack 目录复制。当前保留的 `Drivers/STM32F4xx_HAL_Driver` 为**完整 Inc + Src**，新增外设无需额外补文件。
 
@@ -274,7 +273,7 @@ Flash ≈ 46.7 KB / 1024 KB        RAM ≈ 37.6 KB / 128 KB
 
 ## 八、版本沿革
 
-> 依据源文件时间戳与打包快照整理，非正式变更记录。
+> 早期版本未做正式版本号管理，时间点为推定值。
 
 | 版本 / 时间 | 主要内容 |
 |---|---|

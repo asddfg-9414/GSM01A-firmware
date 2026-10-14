@@ -223,8 +223,8 @@ flowchart TD
 | 项目 | 版本 |
 |---|---|
 | IDE | Keil **µVision 5**（推荐 ≥ 5.25） |
-| 编译器 | **ARMCC V5.06 update 6**（AC5）。若使用 AC6 需自行调整兼容性 |
-| Device Pack | Keil.STM32F4xx_DFP（≥ 2.15.0）+ ARM.CMSIS（≥ 5.2.0） |
+| 编译器 | **ARMCC V5.06**（AC5）。原始工程使用 update 6 (build 750)，实测 update 5 (build 528) 亦可编译；若使用 AC6 需自行调整兼容性 |
+| Device Pack | Keil.STM32F4xx_DFP（≥ 2.15.0，当前工程记录为 2.17.0）+ ARM.CMSIS（≥ 5.2.0） |
 | 配置工具（可选） | STM32CubeMX（用于重新生成 `Core/`，打开 `mc01a.ioc`） |
 
 ### 6.2 编译步骤

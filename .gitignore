@@ -1,0 +1,69 @@
+# ============================================================
+#  GSM01A / mc01a 固件工程  .gitignore
+#  原则：只提交源码、工程配置与文档；编译产物与个人配置一律忽略
+# ============================================================
+
+# ---------- Keil MDK-ARM 编译产物 ----------
+MDK-ARM/mc01a/
+MDK-ARM/*/mc01a/
+*.o
+*.crf
+*.d
+*.dep
+*.axf
+*.elf
+*.hex
+*.bin
+*.map
+*.lst
+*.htm
+*.lnp
+*.iex
+*.sct
+*.build_log*
+*.scvd
+*_sct.Bak
+
+# ---------- Keil 个人配置（含开发者用户名 / 界面布局） ----------
+*.uvguix.*
+*_autosave-*
+*.uvguix
+
+# ---------- 备份与冲突文件 ----------
+*.bak
+*.bak[0-9]
+*.orig
+*冲突文件*
+*.tmp
+~$*
+
+# ---------- 版本快照 / 压缩包 ----------
+*.rar
+*.zip
+*.7z
+
+# ---------- STM32CubeMX 重新生成时可再生的内容（保留 .ioc 与 .mxproject） ----------
+# 如需精简仓库可放开以下两行；默认保留，保证 clone 后可直接编译
+# Drivers/CMSIS/DSP/
+# Drivers/CMSIS/NN/
+
+# ---------- 编辑器 / IDE ----------
+.vscode/
+.idea/
+*.code-workspace
+*.sublime-project
+*.sublime-workspace
+
+# ---------- 操作系统 ----------
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+._*
+
+# ---------- 调试与日志 ----------
+*.log
+*.trace
+JLinkLog.txt
+RTT*.txt

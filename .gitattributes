@@ -1,0 +1,47 @@
+# 行尾与文件类型规范
+# 目的：让 Windows(Keil) 与 Linux/macOS 的协作者得到一致的仓库内容
+
+# 默认：由 Git 自动判定文本文件并在仓库内统一为 LF
+* text=auto
+
+# ---- 源码与工程文件（文本，允许行尾规范化） ----
+*.c            text
+*.h            text
+*.s            text
+*.S            text
+*.md           text
+*.txt          text
+*.ioc          text
+*.mxproject    text
+*.uvprojx      text
+*.uvoptx       text
+*.dbgconf      text
+*.sct          text
+*.json         text
+*.yml          text
+*.yaml         text
+
+# ---- 编译产物与归档（二进制，禁止任何转换） ----
+*.axf          binary
+*.elf          binary
+*.hex          binary
+*.bin          binary
+*.o            binary
+*.crf          binary
+*.d            binary
+*.map          binary
+*.dep          binary
+*.lnp          binary
+*.rar          binary
+*.zip          binary
+*.7z           binary
+*.png          binary
+*.jpg          binary
+*.jpeg         binary
+*.gif          binary
+*.pdf          binary
+
+# ---- 在 GitHub 语言统计中排除第三方库，避免掩盖本项目的真实构成 ----
+Drivers/**                linguist-vendored
+Middlewares/**            linguist-vendored
+MDK-ARM/startup_stm32f405xx.s  linguist-vendored

@@ -9,7 +9,7 @@
 ## [Unreleased]
 
 ### 修复（2026-10-14）
-- `App/hy_hmi/hy_hmi.c`：`export_data()` 中 `file_name`(15 B) / `save_data`(25 B) 缓冲区小于实际拷贝长度（18 B / 28 B）→ 分别放大到 24 B / 32 B，并改用 `memset` + `memcpy` 定长拷贝
+- `App/hy_hmi/hy_hmi.c`：`export_data()` 中 `file_name`(15 B) / `save_data`(25 B) 缓冲区小于实际拷贝长度（18 B / 28 B）→ 分别放大到 24 B / 32 B，并改用 `memset` + `memcpy` 定长拷贝；长度统一由 `hy_file.h` 的 `HY_FILE_NAME_MAX` / `HY_SAVE_DATA_MAX` 宏定义（`hy_file.c` 的数组定义同样引用该宏，避免声明与定义不一致）
 - `App/hy_file/hy_file.c`：`dir_path[25]` / `file_path[30]` 在长文件名下会溢出 → 放大到 64 B / 96 B，`sprintf` 改为 `snprintf`
 - `App/hy_hmi/hy_hmi.c`：`HAL_UART_RxCpltCallback()` 收帧索引缺少上限检查（最坏越界约 4 KB）→ 增加边界判断，超长帧丢弃并复位状态机
 - `App/hy_file/hy_file.c`：`Save_Data()` 中 `strchr()` 返回值未判空（序号格式异常时 HardFault）→ 增加判空与格式校验；`group` / `slot` 补充字符串终止符

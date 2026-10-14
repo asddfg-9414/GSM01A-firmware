@@ -381,7 +381,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 								else
 								{
 										//越界保护：接收缓冲仅 30 字节，超长帧直接丢弃并复位状态机
-										if((g_usart_rx_sta & 0x0FFF) < sizeof(g_usart_rx_buf))
+										if((uint32_t)(g_usart_rx_sta & 0x0FFF) < (uint32_t)sizeof(g_usart_rx_buf))
 										{
 												g_usart_rx_buf[g_usart_rx_sta & 0x0FFF] = RxBuffer[0];
 												g_usart_rx_sta++;
